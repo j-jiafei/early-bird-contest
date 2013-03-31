@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  case raceFilterFlag
+    when 'all': h2 All Races
+    when 'active': h2 Active Races
+    default: h2 Unknown Race Filter Flag
+  each race in races
+    p.racetitle race.title
+    p.racedesc race.description
+  a(href='racecreate') create

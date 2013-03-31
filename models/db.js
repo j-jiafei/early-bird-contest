@@ -4,13 +4,13 @@ var mongoose = require('mongoose');
 
 // The schema for race.
 // TODO - Later shorter key names may be used to save space.
-var raceSchema = new Schema(
+var raceSchema = new mongoose.Schema({
   title: String, // race title
   description: String // race description
   // creator
   // created_at
   // participants?
-);
+});
 
 // The definition of class Race.
 // The collection name in mongodb is races due to the "smart" tricks of
@@ -19,7 +19,7 @@ var Race = mongoose.model('Race', raceSchema);
 
 // The schema for user.
 // TODO - Later shorter key names may be used to save space.
-var userSchema = new Schema(
+var userSchema = new mongoose.Schema({
   email: String, // user email
   nickname: String, // user nickname, since users may not mean to expose emails
   hashedpassword: String, // user hashed password
@@ -27,7 +27,7 @@ var userSchema = new Schema(
   // introduction
   // created_at
   // participating races?
-);
+});
 
 // The definition of class User.
 // The collection name in mongodb is users.
