@@ -5,7 +5,10 @@ exports.list = function(req, res) {
   var raceFilterFlag = 'all';
   racedata.list(raceFilterFlag, function (err, races) {
     if (err) {
-      req.render('error', err);
+      req.render('error', {
+        title: 'Internal Error',
+        error: err
+      });
     }
     else {
       res.render('racelist', {
@@ -31,12 +34,38 @@ exports.submit = function(req, res) {
   var desc = req.body.desc;
   racedata.save({
     title: title,
-    desc: desc
+    description: desc
+  }, function (err, id) {
+    if (err) {
+      res.render('error', {
+        title: 'Internal Error',
+        error: err
+      });
+    }
+    else {
+      res.redirect('/raceview?id=' + id);
+    }
   });
-  res.redirect('/raceview?');
 };
 
 // GET race viewing.
 exports.view = function(req, res) {
-  res.send('View the race');
+  var id = req.query['id'];
+  console.log(id);
+  racedata.find({
+    _id: id
+  }, function (err, races) {
+    if (err || races.length < 1) {
+      res.render('error', {
+        title: 'Internal Error',
+        error: err
+      });
+    }
+    else {
+      res.render('raceview', {
+        title: 'Early Bird Race',
+        race: races[0]
+      });
+    }
+  });
 };

@@ -5,7 +5,7 @@
 
 exports.index = function(req, res){
   var racedata = require('../models/race');
-  racedata.racelist('active', function (err, races) {
+  racedata.list('active', function (err, races) {
     if (err) {
       console.log(err);
       res.render('error', {
