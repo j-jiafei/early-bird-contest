@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h2 Create New Race
+  form(action='/racesubmit', method='POST')
+    label(for='title') Title:
+      input(type='text', name='title', value='#{race.title}', placeholder='')
+    br
+    label(for='desc') Description:
+      input(type='textarea', name='desc', value='#{race.description}')
+    br
+    input(type='submit')

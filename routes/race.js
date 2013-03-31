@@ -70,3 +70,25 @@ exports.view = function(req, res) {
     }
   });
 };
+
+// GET race editing.
+exports.edit = function(req, res) {
+  var id = req.query['id'];
+  console.log(id);
+  racedata.find({
+    _id: id
+  }, function (err, races) {
+    if (err || races.length < 1) {
+      res.render('error', {
+        title: 'Internal Error',
+        error: err
+      });
+    }
+    else {
+      res.render('raceedit', {
+        title: 'Early Bird Race - Edit a Race',
+        race: races[0]
+      });
+    }
+  }); // end of racedata.find
+};
