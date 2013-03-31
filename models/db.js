@@ -6,7 +6,8 @@ var mongoose = require('mongoose');
 // TODO - Later shorter key names may be used to save space.
 var raceSchema = new mongoose.Schema({
   title: String, // race title
-  description: String // race description
+  description: String, // race description
+  status: String // race status
   // creator
   // created_at
   // participants?

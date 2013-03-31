@@ -34,7 +34,8 @@ exports.submit = function(req, res) {
   var desc = req.body.desc;
   racedata.save({
     title: title,
-    description: desc
+    description: desc,
+    status: 'active'
   }, function (err, id) {
     if (err) {
       res.render('error', {

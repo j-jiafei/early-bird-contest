@@ -5,7 +5,7 @@ var Race = mongoose.model('Race');
 
 // Definition of Race.list
 exports.list = function (statusFlag, callback) {
-  Race.find({'StatusFlag': statusFlag}, function (err, races) {
+  Race.find({'status': statusFlag}, function (err, races) {
     if (err) {
       console.log(err);
       callback(err, null);

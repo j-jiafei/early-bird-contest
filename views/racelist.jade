@@ -6,6 +6,6 @@ block content
     when 'active': h2 Active Races
     default: h2 Unknown Race Filter Flag
   each race in races
-    p.racetitle race.title
-    p.racedesc race.description
+    p.racetitle= race.title
+    p.racedesc= race.description
   a(href='racecreate') create
