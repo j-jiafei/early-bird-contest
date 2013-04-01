@@ -23,20 +23,22 @@ exports.list = function(req, res) {
 // GET race creating.
 // Display the new race form.
 exports.create = function(req, res) {
-  res.render('racecreate', {
-    title: 'Early Bird Race - Create a New Race'
+  res.render('raceedit', {
+    title: 'Early Bird Race - Create a New Race',
+    race: racedata.emptyRace()
   });
 };
 
 // POST race submitting.
 exports.submit = function(req, res) {
-  var title = req.body.title;
-  var desc = req.body.desc;
-  racedata.save({
-    title: title,
-    description: desc,
-    status: 'active'
-  }, function (err, id) {
+  var raceObj = {};
+  raceObj.title = req.body.title;
+  raceObj.description = req.body.description;
+  if (req.body._id) {
+    raceObj._id = req.body._id;
+  }
+  raceObj.status = 'active';
+  racedata.save(raceObj, function (err, _id) {
     if (err) {
       res.render('error', {
         title: 'Internal Error',
@@ -44,17 +46,17 @@ exports.submit = function(req, res) {
       });
     }
     else {
-      res.redirect('/raceview?id=' + id);
+      res.redirect('/raceview?_id=' + _id);
     }
   });
 };
 
 // GET race viewing.
 exports.view = function(req, res) {
-  var id = req.query['id'];
-  console.log(id);
+  var _id = req.query['_id'];
+  console.log(_id);
   racedata.find({
-    _id: id
+    _id: _id
   }, function (err, races) {
     if (err || races.length < 1) {
       res.render('error', {
@@ -73,10 +75,10 @@ exports.view = function(req, res) {
 
 // GET race editing.
 exports.edit = function(req, res) {
-  var id = req.query['id'];
-  console.log(id);
+  var _id = req.query['_id'];
+  console.log(_id);
   racedata.find({
-    _id: id
+    _id: _id
   }, function (err, races) {
     if (err || races.length < 1) {
       res.render('error', {

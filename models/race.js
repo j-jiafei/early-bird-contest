@@ -20,32 +20,50 @@ exports.list = function (statusFlag, callback) {
 // Definition of Race.save
 exports.save = function (raceObj, callback) {
   var race = new Race(raceObj);
-  race.save(function (err) {
+  var upsertData = race.toObject();
+  delete upsertData._id;
+  Race.update({_id: race._id}, upsertData, {upsert: true}, function (err) {
     if (err) {
       console.log(err);
       // 0 means invalid object id
       callback(err, 0);
     }
     else {
-      var id = race._id
-      callback(null, id);
+      var _id = race._id
+      callback(null, _id);
     }
   });
 }; // end of exports.racesave
 
 // Definition of Race.find
-exports.find = function (filter, callback) {
-  if ('_id' in filter) {
-    filter['_id'] = mongoose.Types.ObjectId(filter['_id']);
+find = exports.find = function (filter, callback) {
+  if (!filter._id) {
+    callback('invalid _id', null);
   }
-  Race.find(filter, function (err, races) {
-    if (err) {
-      console.log(err);
-      callback(err, null);
+  else {
+    if ('_id' in filter) {
+      filter['_id'] = mongoose.Types.ObjectId(filter['_id']);
     }
-    else {
-      console.log(races);
-      callback(null, races);
-    }
-  });
+    Race.find(filter, function (err, races) {
+      if (err) {
+        console.log(err);
+        callback(err, null);
+      }
+      else {
+        console.log(races);
+        callback(null, races);
+      }
+    });
+  }
 }; // end of exports.find
+
+// Definition of Race.emptyRace
+exports.emptyRace = function (callback) {
+  var raceObj = {
+    _id: '',
+    title: '',
+    description: '',
+    status: '',
+  };
+  return raceObj;
+}
