@@ -35,6 +35,7 @@ app.get('/racecreate', race.create);
 app.post('/racesubmit', race.submit);
 app.get('/raceview', race.view);
 app.get('/raceedit', race.edit);
+app.get('/racedelete', race.delete);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

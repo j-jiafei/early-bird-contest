@@ -94,3 +94,21 @@ exports.edit = function(req, res) {
     }
   }); // end of racedata.find
 };
+
+// GET race deleting.
+exports.delete = function (req, res) {
+  var _id = req.query['_id'];
+  racedata.remove({
+    _id: _id
+  }, function (err) {
+    if (err) {
+      res.render('error', {
+        title: 'Internal Error',
+        error: err
+      });
+    }
+    else {
+      res.redirect('/');
+    }
+  });
+};

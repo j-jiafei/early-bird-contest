@@ -66,4 +66,20 @@ exports.emptyRace = function (callback) {
     status: '',
   };
   return raceObj;
-}
+};
+
+// Definition of Race.remove
+exports.remove = function (filter, callback) {
+  if ('_id' in filter) {
+    filter['_id'] = mongoose.Types.ObjectId(filter['_id']);
+  }
+  Race.remove(filter, function (err) {
+    if (err) {
+      console.log(err);
+      callback(err);
+    }
+    else {
+      callback(null);
+    }
+  }); // end of Race.remove
+}; // end of exports.remove
