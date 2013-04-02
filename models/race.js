@@ -15,7 +15,7 @@ exports.list = function (statusFlag, callback) {
       callback(null, races);
     }
   }); // end of Race.find
-}; // end of exports.racelist
+}; // end of exports.list
 
 // Definition of Race.save
 exports.save = function (raceObj, callback) {
@@ -33,7 +33,7 @@ exports.save = function (raceObj, callback) {
       callback(null, _id);
     }
   });
-}; // end of exports.racesave
+}; // end of exports.save
 
 // Definition of Race.find
 find = exports.find = function (filter, callback) {
