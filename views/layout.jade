@@ -2,6 +2,32 @@ doctype 5
 html
   head
     title= title
+    link(rel='stylesheet', href='/bootstrap/css/bootstrap.css')
+    link(rel='stylesheet', href='/bootstrap/css/bootstrap-responsive.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
+    // Navigation bar
+    div.navbar.navbar-inverse.navbar-fixed-top
+      div.navbar-inner
+        div.container
+          div.nav-collapse.collapse
+            a.brand(href='/') Early Bird Race
+            ul.nav
+              li
+                a(href='/') Home
+              li
+                a(href='/races') Races
+            ul.nav.pull-right
+              li
+                a(href='/register') Register
+              li
+                a(href='/login') Login
     block content
+    // Footer
+    footer.footer
+      div.container
+        p Jeff Jia's Design and Work
+    // Javascript
+    // Placed at the end so the pages are loaded faster
+    script(src='//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js')
+    script(src='/bootstrap/js/bootstrap.min.js')

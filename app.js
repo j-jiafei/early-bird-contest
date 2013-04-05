@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies.
  */
@@ -7,6 +6,7 @@ var express = require('express')
   , db = require('./models/db')
   , routes = require('./routes')
   , race = require('./routes/race')
+  , user = require('./routes/user')
   , http = require('http')
   , path = require('path');
 
@@ -30,6 +30,7 @@ app.configure('development', function(){
 });
 
 app.get('/', routes.index);
+app.get('/races', race.list);
 app.get('/racelist', race.list);
 app.get('/racecreate', race.create);
 app.post('/racesubmit', race.submit);
