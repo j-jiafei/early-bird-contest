@@ -11,7 +11,7 @@ exports.list = function(req, res) {
       });
     }
     else {
-      res.render('racelist', {
+      res.render('races', {
         title: 'Early Bird Race - Create a New Race',
         raceFilterFlag: raceFilterFlag,
         races: races

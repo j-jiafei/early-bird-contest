@@ -7,6 +7,7 @@ var express = require('express')
   , routes = require('./routes')
   , race = require('./routes/race')
   , user = require('./routes/user')
+  , about = require('./routes/about')
   , http = require('http')
   , path = require('path');
 
@@ -31,12 +32,14 @@ app.configure('development', function(){
 
 app.get('/', routes.index);
 app.get('/races', race.list);
-app.get('/racelist', race.list);
 app.get('/racecreate', race.create);
 app.post('/racesubmit', race.submit);
 app.get('/raceview', race.view);
 app.get('/raceedit', race.edit);
 app.get('/racedelete', race.delete);
+app.get('/about', about.about);
+app.get('/login', user.login);
+app.get('/register', user.register);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
