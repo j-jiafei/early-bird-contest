@@ -4,3 +4,9 @@ block content
   div.wrapper
     div.container
       h2 Registration
+      form(action='/regedit', method='POST')
+        label(for='email') Email: 
+          input(type='text', name='email')
+        label(for='password') Password: 
+          input(type='text', name='password')
+        input(type='submit')
