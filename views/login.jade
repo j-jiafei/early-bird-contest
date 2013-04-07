@@ -1,7 +1,14 @@
 extends layout
 
 block content
+  link(rel='stylesheet', href='/stylesheets/login.css', type='text/css')
   div.wrapper
     div.container
-      h2
-        User Login
+      form.form-signin
+        h2.form-signin-heading Login
+        input.input-block-level(type='text', placeholder='Email address')
+        input.input-block-level(type='password', placeholder='Password')
+        label.checkbox
+          input(type='checkbox', value='remember-me')
+          | Remember me
+        button.btn.btn-large.btn-primary(type='submit') Sign in

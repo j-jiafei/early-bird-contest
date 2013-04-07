@@ -3,15 +3,15 @@
  */
 exports.login = function(req, res) {
   res.render('login', {
-    title: 'login'
+    title: 'Login'
   });
 };
 
 /*
  * GET register
  */
-exports.register = function(req, res) {
-  res.render('register', {
-    title: 'register'
+exports.signup = function(req, res) {
+  res.render('signup', {
+    title: 'Sign up'
   });
 };

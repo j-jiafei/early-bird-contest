@@ -39,7 +39,7 @@ app.get('/raceedit', race.edit);
 app.get('/racedelete', race.delete);
 app.get('/about', about.about);
 app.get('/login', user.login);
-app.get('/register', user.register);
+app.get('/signup', user.signup);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

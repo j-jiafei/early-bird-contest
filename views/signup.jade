@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  link(rel='stylesheet', href='/stylesheets/login.css', type='text/css')
+  div.wrapper
+    div.container
+      form.form-signin(action='/signup-submit', method='POST')
+        h2.form-signin-heading Please sign up
+        input.input-block-level(type='text', name='email',
+          placeholder='Email address')
+        input.input-block-level(type='text', name='password',
+          placeholder='Password')
+        button.btn.btn-large.btn-primary(type='submit') Sign up
