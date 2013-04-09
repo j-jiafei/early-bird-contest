@@ -23,7 +23,7 @@ var Race = mongoose.model('Race', raceSchema);
 var userSchema = new mongoose.Schema({
   email: String, // user email
   nickname: String, // user nickname, since users may not mean to expose emails
-  hashedpassword: String, // user hashed password
+  password: String, // user hashed password
   credit: Number // user credit
   // introduction
   // created_at
