@@ -19,11 +19,14 @@ app.configure(function(){
   app.set('view engine', 'jade');
   app.use(express.favicon());
   app.use(express.logger('dev'));
+  app.use(express.cookieParser('zaq12wsxcde34rfvbgt5'));
+  app.use(express.cookieSession());
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(app.router);
   app.use(require('stylus').middleware(__dirname + '/public'));
   app.use(express.static(path.join(__dirname, 'public')));
+  // change secret later, and secret should not be in the source code
 });
 
 app.configure('development', function(){

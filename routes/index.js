@@ -16,7 +16,8 @@ exports.index = function(req, res){
       res.render('index', {
         title: 'Early Bird Race',
         races: races,
-        raceFilterFlag: 'active'
+        raceFilterFlag: 'active',
+        logged: req.session.logged
       });
     }
   }); // end of racedata.racelist

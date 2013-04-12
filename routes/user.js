@@ -15,12 +15,19 @@ exports.login = function(req, res) {
 exports.login_submit = function(req, res) {
   var email = req.body.email;
   var password = req.body.password;
-  userdata.validate(email, password, function(err, err_no) {
+  var rememberme = req.body.rememberme;
+  userdata.validate(email, password, function(err, err_no, user) {
     if (err) {
       console.log(err);
     }
     switch (err_no) {
       case 0:
+        // authentication successfully
+        req.session.logged = true;
+        res.cookie('rememberme', rememberme, {
+          maxAge: 900000,
+          httpOnly: true
+        });
         res.redirect('/');
         break;
       case 1:
