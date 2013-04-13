@@ -1,11 +1,13 @@
+/// route '/'
+/// \author Jeff Jia
 
-/*
- * GET home page.
- */
+var userHelper = require('./helpers/user-helper');
+var raceData = require('../models/race');
 
+/// GET '/'
 exports.index = function(req, res){
-  var racedata = require('../models/race');
-  racedata.list('active', function (err, races) {
+  var currentUser = userHelper.getCurrentUser(req);
+  raceData.list('active', function (err, races) {
     if (err) {
       console.log(err);
       res.render('error', {
@@ -14,10 +16,11 @@ exports.index = function(req, res){
     }
     else {
       res.render('index', {
-        title: 'Early Bird Race',
-        races: races,
-        raceFilterFlag: 'active',
-        logged: req.session.logged
+        title: 'Early Bird Race'
+        , races: races
+        , raceFilterFlag: 'active'
+        , logged: req.session.logged
+        , email: currentUser.email
       });
     }
   }); // end of racedata.racelist

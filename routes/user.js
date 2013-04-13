@@ -1,13 +1,22 @@
 var userdata = require('../models/user');
-var constants = require('constants');
+var constants = require('./constants');
+var userHelper = require('./helpers/user-helper');
 
 /*
  * GET login
  */
 exports.login = function(req, res) {
+  var currentUser = userHelper.getCurrentUser(req);
   res.render('login', {
     title: 'Login'
+    , email: currentUser.email
   });
+};
+
+/// GET logout
+exports.logout = function (req, res) {
+  req.session = null;
+  res.redirect('/');
 };
 
 /*
@@ -23,12 +32,10 @@ exports.login_submit = function(req, res) {
     switch (err_no) {
       case 0:
         // authentication successfully
-        req.session.logged = true;
-        if (req.body.rememberme) {
-          req.session.cookie.maxAge = constants.REMEMBER_ME_MAX_AGE;
-        }
-        else {
-          req.session.cookie.maxAge = constants.DEFAULT_MAX_AGE;
+        req.session.email = email;
+        if (req.body.remember) {
+          // TODO - I have not sure how to set maxAge in cookieSession.
+          // I guess we need a separate cookie to deal with this case.
         }
         res.redirect('/');
         break;

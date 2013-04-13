@@ -20,10 +20,16 @@ html
               li
                 a(href='/about') About
             ul.nav.pull-right
-              li
-                a(href='/signup') Sign up
-              li
-                a(href='/login') Login
+              if email
+                li
+                  a(href='/') #{email}
+                li
+                  a(href='/logout') Logout
+              else
+                li
+                  a(href='/signup') Sign up
+                li
+                  a(href='/login') Login
     div(id='wrap')
       block content
     // Footer
