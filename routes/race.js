@@ -1,7 +1,12 @@
+/// \brief route User related methods.
+/// \author Jeff Jia
+
 var racedata = require('../models/race');
+var userHelper = require('./helpers/user-helper');
 
 // GET races listing.
 exports.list = function(req, res) {
+  var currentUser = userHelper.getCurrentUser(req);
   var raceFilterFlag = 'all';
   racedata.list(raceFilterFlag, function (err, races) {
     if (err) {
@@ -12,9 +17,10 @@ exports.list = function(req, res) {
     }
     else {
       res.render('races', {
-        title: 'Early Bird Race - Create a New Race',
-        raceFilterFlag: raceFilterFlag,
-        races: races
+        title: 'Early Bird Race - Create a New Race'
+        , raceFilterFlag: raceFilterFlag
+        , races: races
+        , email: currentUser.email
       });
     }
   });
@@ -23,9 +29,11 @@ exports.list = function(req, res) {
 // GET race creating.
 // Display the new race form.
 exports.create = function(req, res) {
+  var currentUser = userHelper.getCurrentUser(req);
   res.render('raceedit', {
-    title: 'Early Bird Race - Create a New Race',
-    race: racedata.emptyRace()
+    title: 'Early Bird Race - Create a New Race'
+    , race: racedata.emptyRace()
+    , email: currentUser
   });
 };
 
@@ -54,6 +62,7 @@ exports.submit = function(req, res) {
 // GET race viewing.
 exports.view = function(req, res) {
   var _id = req.query['_id'];
+  var currentUser = userHelper.getCurrentUser(req);
   console.log(_id);
   racedata.find({
     _id: _id
@@ -66,8 +75,9 @@ exports.view = function(req, res) {
     }
     else {
       res.render('raceview', {
-        title: 'Early Bird Race',
-        race: races[0]
+        title: 'Early Bird Race'
+        , race: races[0]
+        , email: currentUser.email
       });
     }
   });
@@ -76,6 +86,7 @@ exports.view = function(req, res) {
 // GET race editing.
 exports.edit = function(req, res) {
   var _id = req.query['_id'];
+  var currentUser = userHelper.getCurrentUser(req);
   console.log(_id);
   racedata.find({
     _id: _id
@@ -88,8 +99,9 @@ exports.edit = function(req, res) {
     }
     else {
       res.render('raceedit', {
-        title: 'Early Bird Race - Edit a Race',
-        race: races[0]
+        title: 'Early Bird Race - Edit a Race'
+        , race: races[0]
+        , email: currentUser.email
       });
     }
   }); // end of racedata.find

@@ -22,7 +22,8 @@ html
             ul.nav.pull-right
               if email
                 li
-                  a(href='/') #{email}
+                  a(href='/')
+                    | #{email}
                 li
                   a(href='/logout') Logout
               else

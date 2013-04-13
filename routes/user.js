@@ -60,8 +60,10 @@ exports.login_submit = function(req, res) {
  * GET signup
  */
 exports.signup = function(req, res) {
+  var currentUser = userHelper.getCurrentUser(req);
   res.render('signup', {
     title: 'Sign up'
+    , email: currentUser.email
   });
 };
 
