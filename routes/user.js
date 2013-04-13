@@ -1,4 +1,5 @@
 var userdata = require('../models/user');
+var constants = require('constants');
 
 /*
  * GET login
@@ -15,7 +16,6 @@ exports.login = function(req, res) {
 exports.login_submit = function(req, res) {
   var email = req.body.email;
   var password = req.body.password;
-  var rememberme = req.body.rememberme;
   userdata.validate(email, password, function(err, err_no, user) {
     if (err) {
       console.log(err);
@@ -24,10 +24,12 @@ exports.login_submit = function(req, res) {
       case 0:
         // authentication successfully
         req.session.logged = true;
-        res.cookie('rememberme', rememberme, {
-          maxAge: 900000,
-          httpOnly: true
-        });
+        if (req.body.rememberme) {
+          req.session.cookie.maxAge = constants.REMEMBER_ME_MAX_AGE;
+        }
+        else {
+          req.session.cookie.maxAge = constants.DEFAULT_MAX_AGE;
+        }
         res.redirect('/');
         break;
       case 1:

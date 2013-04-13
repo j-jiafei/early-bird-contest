@@ -2,6 +2,12 @@
  * Module dependencies.
  */
 
+///
+/// FIXME: The value of COOKIE_SECRET should not be set in the source code.
+var cookieSecret = 'zaq12wsxcde34rfvbgt5';
+
+var routeConstants = require('./routes/constants');
+
 var express = require('express')
   , db = require('./models/db')
   , routes = require('./routes')
@@ -19,8 +25,11 @@ app.configure(function(){
   app.set('view engine', 'jade');
   app.use(express.favicon());
   app.use(express.logger('dev'));
-  app.use(express.cookieParser('zaq12wsxcde34rfvbgt5'));
-  app.use(express.cookieSession());
+  app.use(express.cookieParser(cookieSecret));
+  app.use(express.cookieSession({
+    secret: cookieSecret
+    , maxAge: routeConstants.DEFAULT_MAX_AGE
+  }));
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(app.router);
