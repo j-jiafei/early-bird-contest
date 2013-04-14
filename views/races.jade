@@ -3,5 +3,12 @@ extends layout
 block content
   div.wrapper
     div.container
+      ul.nav.nav-tabs
+        li.active
+          a(href='#') Active
+        li
+          a(href='#') Featured
+        li
+          a(href='#') Subscribed
       include racelist
       a(href='/racecreate') Create

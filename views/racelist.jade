@@ -1,8 +1,3 @@
-case raceFilterFlag
-  when 'all': h2 All Races
-  when 'active': h2 Active Races
-  default: h2 Unknown Race Filter Flag
-
 each race in races
   p.racetitle= race.title
   p.racedesc= race.description
@@ -12,3 +7,5 @@ each race in races
     a(href='/raceedit?_id=#{race._id}') Edit
   p
     a(href='/racedelete?_id=#{race._id}') Delete
+  p
+    a(href='/race-subscribe'?id=#{race._id) Subscribe

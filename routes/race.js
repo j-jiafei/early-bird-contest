@@ -4,10 +4,10 @@
 var racedata = require('../models/race');
 var userHelper = require('./helpers/user-helper');
 
-// GET races listing.
+// GET '/races'
 exports.list = function(req, res) {
   var currentUser = userHelper.getCurrentUser(req);
-  var raceFilterFlag = 'all';
+  var raceFilterFlag = 'active';
   racedata.list(raceFilterFlag, function (err, races) {
     if (err) {
       req.render('error', {

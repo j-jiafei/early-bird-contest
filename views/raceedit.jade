@@ -1,16 +1,18 @@
 extends layout
 
 block content
-  h2 Create New Race
-  form(action='/racesubmit', method='POST')
-    if race._id
-      input(type='hidden', name='_id', value='#{race._id}')
-      br
-    label(for='title') Title:
-      input(type='text', name='title', value='#{race.title}')
-    br
-    label(for='description') Description:
-      input(type='textarea', name='description', value='#{race.description}')
-    br
-    input(type='submit')
-    a(href='/') Back
+  div.wrapper
+    div.container
+      form(action='/racesubmit', method='POST')
+        if race._id
+          input(type='hidden', name='_id', value='#{race._id}')
+          br
+        label(for='title') Title:
+          input(type='text', name='title', value='#{race.title}')
+        br
+        label(for='description') Description:
+          input(type='textarea', name='description', value='#{race.description}')
+        br
+        input(type='submit')
+        br
+        a(href='/') Back
