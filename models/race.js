@@ -2,7 +2,6 @@
 
 var mongoose = require('mongoose');
 var Race = mongoose.model('Race');
-var User = mongoose.model('User');
 
 // Definition of Race.list
 exports.list = function (statusFlag, callback) {
@@ -10,11 +9,9 @@ exports.list = function (statusFlag, callback) {
     if (err) {
       console.log(err);
       callback(err, null);
+      return;
     }
-    else {
-      console.log(races);
-      callback(null, races);
-    }
+    callback(null, races);
   }); // end of Race.find
 }; // end of exports.list
 

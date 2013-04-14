@@ -18,22 +18,6 @@ var raceSchema = new mongoose.Schema({
 // mongoose.
 var Race = mongoose.model('Race', raceSchema);
 
-// The schema for user.
-// TODO - Later shorter key names may be used to save space.
-var userSchema = new mongoose.Schema({
-  email: String // user email
-  , nickname: String // user nickname, since users may not mean to expose emails
-  , password: String // user hashed password
-  , credit: Number // user credit
-  // introduction
-  // created_at
-  , races: [mongoose.Schema.Types.ObjectID] // participating races
-});
-
-// The definition of class User.
-// The collection name in mongodb is users.
-var User = mongoose.model('User', userSchema);
-
 // earlybirdracedev is the mongodb database name for "dev".
 // An exception is thrown if the connection fails.
 mongoose.connect('mongodb://localhost/earlybirdracedev', function (err) {

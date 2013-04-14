@@ -1,6 +1,28 @@
 var md5 = require('./password');
 var mongoose = require('mongoose');
-var User = mongoose.model('User');
+
+// The schema for user.
+var userSchema = new mongoose.Schema({
+  email: String // user email
+  , nickname: String // user nickname, since users may not mean to expose emails
+  , password: String // user hashed password
+  , credit: Number // user credit
+  , races: [mongoose.Schema.Types.ObjectID] // participating races
+});
+
+// The collection name in mongodb is "users".
+var User = mongoose.model('User', userSchema);
+
+/// \param callback - callback (err, user)
+exports.findByEmail = function (email, callback) {
+  User.findOne({ email: email }, function (err, user) {
+    if (err) {
+      callback(err, null);
+      return;
+    }
+    callback(null, user);
+  });
+};
 
 // callback(err, err_no)
 // err_no:
@@ -8,22 +30,15 @@ var User = mongoose.model('User');
 //   1: email address exists
 //   2: database error
 exports.create = function(email, password, callback) {
-  User.find({
+  User.findOne({
     email: email
-  }, function(err, users) {
+  }, function(err, user) {
     if (err) {
-      console.log(err);
       callback(err, 2);
     }
-    else if (users && users.length > 0) {
-      if (users.length > 1) {
-        err = '[Internal Error] Email address should be unique';
-        callback(err, 2);
-      }
-      else {
-        err = 'Email address already exists';
-        callback(null, 1);
-      }
+    else if (user) {
+      err = 'Email address already exists';
+      callback(err, 1);
     }
     else {
       hashedPassword = md5.hash(password);
@@ -33,7 +48,6 @@ exports.create = function(email, password, callback) {
       });
       user.save(function(err, user) {
         if (err) {
-          console.log(err);
           callback(err, 2);
         }
         else {
