@@ -33,6 +33,7 @@ exports.login_submit = function(req, res) {
       case 0:
         // authentication successfully
         req.session.email = email;
+        req.session.userId = user._id;
         if (req.body.remember) {
           // TODO - I have not sure how to set maxAge in cookieSession.
           // I guess we need a separate cookie to deal with this case.

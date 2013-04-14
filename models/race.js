@@ -2,6 +2,7 @@
 
 var mongoose = require('mongoose');
 var Race = mongoose.model('Race');
+var User = mongoose.model('User');
 
 // Definition of Race.list
 exports.list = function (statusFlag, callback) {
@@ -83,3 +84,22 @@ exports.remove = function (filter, callback) {
     }
   }); // end of Race.remove
 }; // end of exports.remove
+
+/// @param callback - callback (error)
+exports.addParticipant = function (raceObjectID, userObjectID, callback) {
+  Race.findById(raceObjectID, function (error, race) {
+    if (error) {
+      callback(error);
+      return;
+    }
+    race.participants.push(userObjectID);
+    race.save(function (err, race) {
+      if (err) {
+        console.log(err);
+        callback(err);
+        return;
+      }
+      callback(null);
+    });
+  });
+};

@@ -10,9 +10,11 @@ exports.getCurrentUser = function (req) {
   console.log('In function getCurrentUser');
   console.log(req.session);
   var email = req.session.email;
-  if (email) {
+  var id = req.session.userId;
+  if (email && id) {
     return {
       email: email
+      , id: id
     };
   }
   else {

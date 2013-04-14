@@ -44,7 +44,7 @@ exports.create = function(email, password, callback) {
   });
 };
 
-// callback(err, err_no)
+/// @param callback - callback(err, err_no, user)
 // err_no:
 //  0: successfully
 //  1: incorrect password
@@ -59,20 +59,20 @@ exports.validate = function(email, password, callback) {
     console.log(users);
     if (err) {
       console.log(err);
-      callback(err, 3);
+      callback(err, 3, null);
     }
     else if (users && users.length > 0) {
       if (users.length > 1) {
         err = '[Internal Error] Email address should be unique';
-        callback(err, 3);
+        callback(err, 3, null);
       }
       else {
         if (md5.validate(users[0].password, password)) {
-          callback(null, 0);
+          callback(null, 0, users[0]);
         }
         else {
           err = 'Incorrect password';
-          callback(err, 1);
+          callback(err, 1, null);
         }
       }
     }
@@ -86,4 +86,22 @@ exports.validate = function(email, password, callback) {
 // Definition of User.changePassword
 // Check old hashed password first, and set the new hashed password
 exports.changePassword = function (email, oldHashedPassword, newHashedPassword, callback) {
+};
+
+exports.addRace = function (userObjectID, raceObjectID, callback) {
+  User.findById(userObjectID, function (err, user) {
+    if (err) {
+      callback(err);
+      return;
+    }
+    user.races.push(raceObjectID);
+    user.save(function (err, user) {
+      if (err) {
+        console.log(err);
+        callback(err);
+        return;
+      }
+      callback(null);
+    });
+  });
 };

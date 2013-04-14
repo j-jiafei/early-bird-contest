@@ -53,6 +53,7 @@ app.post('/login-submit', user.login_submit);
 app.get('/logout', user.logout);
 app.get('/signup', user.signup);
 app.post('/signup-submit', user.signup_submit);
+app.get('/race-subscribe', race.subscribe);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

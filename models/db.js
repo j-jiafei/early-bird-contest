@@ -5,12 +5,12 @@ var mongoose = require('mongoose');
 // The schema for race.
 // TODO - Later shorter key names may be used to save space.
 var raceSchema = new mongoose.Schema({
-  title: String, // race title
-  description: String, // race description
-  status: String // race status
+  title: String // race title
+  , description: String // race description
+  , status: String // race status
   // creator
   // created_at
-  // participants?
+  , participants: [mongoose.Schema.Types.ObjectID] // participants
 });
 
 // The definition of class Race.
@@ -21,13 +21,13 @@ var Race = mongoose.model('Race', raceSchema);
 // The schema for user.
 // TODO - Later shorter key names may be used to save space.
 var userSchema = new mongoose.Schema({
-  email: String, // user email
-  nickname: String, // user nickname, since users may not mean to expose emails
-  password: String, // user hashed password
-  credit: Number // user credit
+  email: String // user email
+  , nickname: String // user nickname, since users may not mean to expose emails
+  , password: String // user hashed password
+  , credit: Number // user credit
   // introduction
   // created_at
-  // participating races?
+  , races: [mongoose.Schema.Types.ObjectID] // participating races
 });
 
 // The definition of class User.

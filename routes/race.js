@@ -1,17 +1,18 @@
 /// \brief route User related methods.
 /// \author Jeff Jia
 
-var racedata = require('../models/race');
+var raceModel = require('../models/race');
+var userModel = require('../models/user');
 var userHelper = require('./helpers/user-helper');
 
 // GET '/races'
 exports.list = function(req, res) {
   var currentUser = userHelper.getCurrentUser(req);
   var raceFilterFlag = 'active';
-  racedata.list(raceFilterFlag, function (err, races) {
+  raceModel.list(raceFilterFlag, function (err, races) {
     if (err) {
       req.render('error', {
-        title: 'Internal Error',
+        title: '[Internal Error]',
         error: err
       });
     }
@@ -32,7 +33,7 @@ exports.create = function(req, res) {
   var currentUser = userHelper.getCurrentUser(req);
   res.render('raceedit', {
     title: 'Early Bird Race - Create a New Race'
-    , race: racedata.emptyRace()
+    , race: raceModel.emptyRace()
     , email: currentUser
   });
 };
@@ -46,7 +47,7 @@ exports.submit = function(req, res) {
     raceObj._id = req.body._id;
   }
   raceObj.status = 'active';
-  racedata.save(raceObj, function (err, _id) {
+  raceModel.save(raceObj, function (err, _id) {
     if (err) {
       res.render('error', {
         title: 'Internal Error',
@@ -64,7 +65,7 @@ exports.view = function(req, res) {
   var _id = req.query['_id'];
   var currentUser = userHelper.getCurrentUser(req);
   console.log(_id);
-  racedata.find({
+  raceModel.find({
     _id: _id
   }, function (err, races) {
     if (err || races.length < 1) {
@@ -88,7 +89,7 @@ exports.edit = function(req, res) {
   var _id = req.query['_id'];
   var currentUser = userHelper.getCurrentUser(req);
   console.log(_id);
-  racedata.find({
+  raceModel.find({
     _id: _id
   }, function (err, races) {
     if (err || races.length < 1) {
@@ -104,13 +105,13 @@ exports.edit = function(req, res) {
         , email: currentUser.email
       });
     }
-  }); // end of racedata.find
+  }); // end of raceModel.find
 };
 
 // GET race deleting.
 exports.delete = function (req, res) {
   var _id = req.query['_id'];
-  racedata.remove({
+  raceModel.remove({
     _id: _id
   }, function (err) {
     if (err) {
@@ -123,4 +124,35 @@ exports.delete = function (req, res) {
       res.redirect('/');
     }
   });
+};
+
+/// GET '/race-subscribe'
+exports.subscribe = function (req, res) {
+  var raceId = req.query['raceId'];
+  var currentUser = userHelper.getCurrentUser(req);
+  var currentUserId = currentUser.id;
+  if (currentUserId) {
+    raceModel.addParticipant(raceId, currentUserId
+        , function (err) {
+      if (err) {
+        console.log(err);
+        res.end(err);
+        return;
+      }
+      console.log('[Info] Add participant successfully.');
+      userModel.addRace(currentUserId, raceId, function (err) {
+        if (err) {
+          console.log(err);
+          res.end('Error: ' + err);
+          return;
+        }
+        console.log('[Info] Add race successfully.');
+        res.redirect('/races');
+      });
+    });
+  }
+  else {
+    // The user needs to sign in.
+    res.redirect('/login');
+  }
 };
