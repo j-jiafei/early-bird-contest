@@ -5,6 +5,7 @@ var testConstants = require('../test-constants');
 var assert = require('assert');
 var userModel = require('../../models/user');
 var mongoose = require('mongoose');
+var async = require('async');
 var User = mongoose.model('User');
 mongoose.connect(testConstants.mongoDbTestUrl);
 
@@ -57,54 +58,77 @@ describe('userModel', function() {
   });
 
   describe('#findByEmail', function () {
-    var registeredUsers = [
-      {
-        email: 'bob@gmail.com'
-        , password: 'bob_password'
-      }
-      , {
-        email: 'david@gmail.com'
-        , password: 'david_password'
-      }
+    var registeredEmails = [
+      'bob@gmail.com'
+      , 'david@gmail.com'
+    ];
+    var nonRegisteredEmails = [
+      'frank@gmail.com',
+      'howard@gmail.com'
     ];
     /// add two users bob and david into the db.
     beforeEach(function (done) {
-      userModel.create(registeredUsers[0].email, registeredUsers[0].password,
-        function (err) {
-          if (err) {
-            done(err);
-            return;
-          }
-          userModel.create(registeredUsers[1].email, registeredUsers[1].email,
-            function (err) {
-              if (err) {
-                done(err);
-                return;
-              }
+      var count = 0;
+      async.each(registeredEmails,
+        function (email) {
+          userModel.create(email, 'password', function (err) {
+            if (err) {
+              done(err);
+              return;
+            }
+            ++count;
+            if (count == registeredEmails.length) {
               done();
             }
-          );
+          });
+        },
+        function (err) {
+          done(err);
+          return;
         }
       );
     });
     it('registered users should be found', function (done) {
-      userModel.findByEmail(registeredUsers[0].email, function (err, u) {
-        if (err) {
+      var count = 0;
+      async.each(registeredEmails,
+        function (email) {
+          userModel.findByEmail(email, function (err) {
+            if (err) {
+              done(err);
+              return;
+            }
+            ++count;
+            if (count == registeredEmails.length) {
+              done();
+            }
+          });
+        },
+        function (err) {
           done(err);
           return;
         }
-        assert.notEqual(null, u);
-        assert.equal(registeredUsers[0].email, u.email);
-        userModel.findByEmail(registeredUsers[1].email, function (err, u) {
-          if (err) {
-            done(err);
-          }
-          assert.notEqual(null, u);
-          assert.equal(registeredUsers[1].email, u.email);
-          done();
-        });
-      });
+      );
     });
-    it('frank should not be found');
+    it('non-registered users should not be found', function (done) {
+      var count = 0;
+      async.each(nonRegisteredEmails,
+        function (email) {
+          userModel.findByEmail(email, function (err) {
+            if (err) {
+              done(err);
+              return;
+            }
+            ++count;
+            if (count == nonRegisteredEmails.length) {
+              done();
+            }
+          });
+        },
+        function (err) {
+          done(err);
+          return;
+        }
+      );
+    });
   });
 });

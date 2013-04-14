@@ -10,6 +10,7 @@
     "jade": "*",
     "stylus": "*",
     "mongoose": "*",
-    "connect": "*"
+    "connect": "*",
+    "async": "*"
   }
 }
