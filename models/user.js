@@ -1,13 +1,14 @@
-var md5 = require('./password');
 var mongoose = require('mongoose');
 
-// The schema for user.
+var md5 = require('./password');
+var errorMessage = require('../routes/error-message');
+
 var userSchema = new mongoose.Schema({
-  email: String // user email
-  , nickname: String // user nickname, since users may not mean to expose emails
-  , password: String // user hashed password
-  , credit: Number // user credit
-  , races: [mongoose.Schema.Types.ObjectID] // participating races
+  email: String
+  , nickname: String
+  , password: String
+  , credit: Number
+  , races: [mongoose.Schema.Types.ObjectID]
 });
 
 // The collection name in mongodb is "users".
@@ -24,21 +25,16 @@ exports.findByEmail = function (email, callback) {
   });
 };
 
-// callback(err, err_no)
-// err_no:
-//   0: successfully
-//   1: email address exists
-//   2: database error
-exports.create = function(email, password, callback) {
+// callback(err, user)
+exports.register = function(email, password, callback) {
   User.findOne({
     email: email
   }, function(err, user) {
     if (err) {
-      callback(err, 2);
+      callback(err);
     }
     else if (user) {
-      err = 'Email address already exists';
-      callback(err, 1);
+      callback(new Error(errorMessage.emailAlreadyExistsError));
     }
     else {
       hashedPassword = md5.hash(password);
@@ -48,74 +44,61 @@ exports.create = function(email, password, callback) {
       });
       user.save(function(err, user) {
         if (err) {
-          callback(err, 2);
+          callback(err);
         }
         else {
-          callback(null, 0);
+          callback(null, user);
         }
       });
     }
   });
 };
 
-/// @param callback - callback(err, err_no, user)
-// err_no:
-//  0: successfully
-//  1: incorrect password
-//  2: user does not exists
-//  3: database error
-exports.validate = function(email, password, callback) {
-  console.log('email: ' + email);
-  console.log('password: ' + password);
-  User.find({
+/// \param callback - callback(err, user)
+exports.authenticate = function(email, password, callback) {
+  User.findOne({
     email: email
-  }, function(err, users) {
-    console.log(users);
+  }, function(err, user) {
     if (err) {
-      console.log(err);
-      callback(err, 3, null);
+      callback(err);
     }
-    else if (users && users.length > 0) {
-      if (users.length > 1) {
-        err = '[Internal Error] Email address should be unique';
-        callback(err, 3, null);
+    else if (user) {
+      if (md5.validate(user.password, password)) {
+        callback(null, user);
       }
       else {
-        if (md5.validate(users[0].password, password)) {
-          callback(null, 0, users[0]);
-        }
-        else {
-          err = 'Incorrect password';
-          callback(err, 1, null);
-        }
+        callback(new Error(errorMessage.invalidPasswordError));
       }
     }
     else {
-      err = 'The email address does not exist';
-      callback(err, 2);
+      callback(new Error(errorMessage.nonExistentEmailError));
     }
   });
 };
 
-// Definition of User.changePassword
-// Check old hashed password first, and set the new hashed password
-exports.changePassword = function (email, oldHashedPassword, newHashedPassword, callback) {
-};
-
-exports.addRace = function (userObjectID, raceObjectID, callback) {
-  User.findById(userObjectID, function (err, user) {
+/// \param callback - callback(err, user)
+exports.subscribeRace = function (email, raceId, callback) {
+  User.findOne({ email: email }, function (err, user) {
     if (err) {
       callback(err);
       return;
     }
-    user.races.push(raceObjectID);
+    if (!user) {
+      callback(new Error(errorMessage.nonExistentEmailError));
+      return;
+    }
+    if (user.races.indexOf(raceId) != -1) {
+      callback(new Error(errorMessage.raceAlreadySubscribedError));
+      return;
+    }
+    user.races.push(raceId);
     user.save(function (err, user) {
       if (err) {
         console.log(err);
         callback(err);
         return;
       }
-      callback(null);
+      callback(null, user);
     });
   });
 };
