@@ -1,21 +1,63 @@
-// Definitions of behaviors of Race.
-
 var mongoose = require('mongoose');
-var Race = mongoose.model('Race');
+var assert = require('assert');
+var errorMessage = require('../routes/error-message');
 
-// Definition of Race.list
+var raceSchema = new mongoose.Schema({
+  title: String
+  , description: String
+  , status: String
+  , participants: [String] // participants
+});
+
+var Race = mongoose.model('Race', raceSchema);
+
+exports.findByTitle = function (title, callback) {
+  Race.findOne({ title: title }, function (err, race) {
+    if (err) {
+      callback(err);
+      return;
+    }
+    callback(null, race);
+  });
+};
+
+exports.create = function (title, info, callback) {
+  Race.findOne({ title: title }, function (err, race) {
+    if (err) {
+      callback(err);
+      return;
+    }
+    if (race) {
+      callback(new Error(errorMessage.raceTitleAlreadyExistsError));
+      return;
+    }
+    if (info.title) {
+      assert.equal(title, info.title);
+    }
+    else {
+      info.title = title;
+    }
+    race = new Race(info);
+    race.save(function (err, race) {
+      if (err) {
+        callback(err);
+        return;
+      }
+      callback(null, race);
+    });
+  });
+};
+
 exports.list = function (statusFlag, callback) {
   Race.find({'status': statusFlag}, function (err, races) {
     if (err) {
-      console.log(err);
       callback(err, null);
       return;
     }
     callback(null, races);
-  }); // end of Race.find
-}; // end of exports.list
+  });
+};
 
-// Definition of Race.save
 exports.save = function (raceObj, callback) {
   var race = new Race(raceObj);
   var upsertData = race.toObject();
@@ -33,7 +75,6 @@ exports.save = function (raceObj, callback) {
   });
 }; // end of exports.save
 
-// Definition of Race.find
 find = exports.find = function (filter, callback) {
   if (!filter._id) {
     callback('invalid _id', null);

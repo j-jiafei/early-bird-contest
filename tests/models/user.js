@@ -2,7 +2,7 @@
 /// \author Jeff Jia
 
 var errorMessage = require('../../routes/error-message');
-var testConstants = require('../test-constants');
+var testConstant = require('../test-constant');
 var userModel = require('../../models/user');
 
 
@@ -10,10 +10,17 @@ var assert = require('assert');
 var mongoose = require('mongoose');
 var async = require('async');
 
-var User = mongoose.model('User');
-mongoose.connect(testConstants.mongoDbTestUrl);
-
 describe('userModel', function() {
+
+  var User = mongoose.model('User');
+  mongoose.connect(testConstant.mongoDbTestUrl, function E (err) {
+    if (err) {
+      if (err.state != 2) {
+        throw(err);
+      }
+    }
+  });
+
 
   /// clear database
   /// add some test users
