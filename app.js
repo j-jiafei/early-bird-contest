@@ -11,7 +11,7 @@ var routeConstants = require('./routes/constants');
 var express = require('express')
   , db = require('./models/db')
   , routes = require('./routes')
-  , race = require('./routes/race')
+  , contest = require('./routes/contest')
   , user = require('./routes/user')
   , about = require('./routes/about')
   , http = require('http')
@@ -41,19 +41,19 @@ app.configure('development', function(){
 });
 
 app.get('/', routes.index);
-app.get('/races', race.list);
-app.get('/racecreate', race.create);
-app.post('/racesubmit', race.submit);
-app.get('/raceview', race.view);
-app.get('/raceedit', race.edit);
-app.get('/racedelete', race.delete);
+app.get('/contests', contest.list);
+app.get('/racecreate', contest.create);
+app.post('/racesubmit', contest.submit);
+app.get('/raceview', contest.view);
+app.get('/raceedit', contest.edit);
+app.get('/racedelete', contest.delete);
 app.get('/about', about.about);
 app.get('/login', user.login);
 app.post('/login-submit', user.login_submit);
 app.get('/logout', user.logout);
 app.get('/signup', user.signup);
 app.post('/signup-submit', user.signup_submit);
-app.get('/race-subscribe', race.subscribe);
+app.get('/race-subscribe', contest.subscribe);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

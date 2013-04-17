@@ -5,11 +5,34 @@ var raceModel = require('../models/race');
 var userModel = require('../models/user');
 var userHelper = require('./helpers/user-helper');
 
-// GET '/races'
-exports.list = function(req, res) {
+/// local functions for exports.list
+var createTab = function (name, filterFlag, active) {
+  return {
+    name: name
+    , filterFlag: filterFlag
+    , active: active
+  };
+}
+
+// GET '/contests'
+exports.list = function (req, res) {
+  var filterFlag = req.body.tab;
   var currentUser = userHelper.getCurrentUser(req);
-  var raceFilterFlag = 'active';
-  raceModel.list(raceFilterFlag, function (err, races) {
+  var tabs = new Array();
+  tabs[0] = createTab('Subscribed', 'subscribed', false);
+  tabs[1] = createTab('Featured', 'featured', false);
+  tabs[2] = createTab('All', 'featured', false);
+  var foundActive = false;
+  for (var i = 0; i < tabs.length; ++i) {
+    if (tabs[i].filterFlag == filterFlag) {
+      tabs[i].active = true;
+      foundActive = true;
+    }
+  }
+  if (!foundActive) {
+    tabs[0].active = true;
+  }
+  raceModel.list('all', function (err, races) {
     if (err) {
       req.render('error', {
         title: '[Internal Error]',
@@ -17,11 +40,11 @@ exports.list = function(req, res) {
       });
     }
     else {
-      res.render('races', {
-        title: 'Early Bird Race - Create a New Race'
-        , raceFilterFlag: raceFilterFlag
+      res.render('contests', {
+        title: 'Early Bird Contests - Contest List'
         , races: races
         , email: currentUser.email
+        , tabs: tabs
       });
     }
   });
