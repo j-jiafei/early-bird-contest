@@ -50,13 +50,11 @@ exports.list = function (req, res) {
   });
 };
 
-// GET race creating.
-// Display the new race form.
-exports.create = function(req, res) {
+// GET '/new-contest'
+exports.new = function (req, res) {
   var currentUser = userHelper.getCurrentUser(req);
-  res.render('raceedit', {
-    title: 'Early Bird Race - Create a New Race'
-    , race: raceModel.emptyRace()
+  res.render('new-contest', {
+    title: 'Early Bird Contests - Submit a New Contest'
     , email: currentUser
   });
 };

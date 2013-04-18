@@ -1,0 +1,41 @@
+extends layout
+
+block content
+  div.wrapper
+    div.container
+      form.form-horizontal(action='/contest-submit', method='POST')
+        legend New Contest
+        div.control-group
+          label.control-label(for='title') Title
+          div.controls
+            input(type='text', id='title', placeholder='Title')
+        div.control-group
+          label.control-label(for='start-date') From
+          dev.controls
+            input(type='date', id='start-date')
+        div.control-group
+          label.control-label(for='end-date') To
+          dev.controls
+            input(type='date', id='end-date')
+        div.control-group
+          label.control-label Repeat
+          dev.controls
+            select
+              option(value='none') None
+              option(value='every-day') Every day
+              option(value='every-two-days') Every two days
+              option(value='every-three-days') Every three days
+              option(value='every-week') Every week
+              option(value='every-two-weeks') Every two weeks
+        div.control-group
+          label.control-label(for='featured') Featured
+          dev.controls
+            input(type='checkbox', id='featured', value='featured')
+        div.control-group
+          label.control-label(for='description') Description
+          div.controls
+            textarea(rows='5', type='textarea', id='description', placeholder='Description')
+        div.control-group
+          div.controls
+            button.btn.btn-primary(type='submit') Submit
+            a.btn(href='#') Cancel

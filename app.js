@@ -42,18 +42,13 @@ app.configure('development', function(){
 
 app.get('/', routes.index);
 app.get('/contests', contest.list);
-app.get('/racecreate', contest.create);
-app.post('/racesubmit', contest.submit);
-app.get('/raceview', contest.view);
-app.get('/raceedit', contest.edit);
-app.get('/racedelete', contest.delete);
+app.get('/new-contest', contest.new);
 app.get('/about', about.about);
 app.get('/login', user.login);
 app.post('/login-submit', user.login_submit);
 app.get('/logout', user.logout);
 app.get('/signup', user.signup);
 app.post('/signup-submit', user.signup_submit);
-app.get('/race-subscribe', contest.subscribe);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
