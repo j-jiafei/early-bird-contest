@@ -16,12 +16,12 @@ var createTab = function (name, filterFlag, active) {
 
 // GET '/contests'
 exports.list = function (req, res) {
-  var filterFlag = req.body.tab;
+  var filterFlag = req.query['tab'];
   var currentUser = userHelper.getCurrentUser(req);
   var tabs = new Array();
   tabs[0] = createTab('Subscribed', 'subscribed', false);
   tabs[1] = createTab('Featured', 'featured', false);
-  tabs[2] = createTab('All', 'featured', false);
+  tabs[2] = createTab('All', 'all', false);
   var foundActive = false;
   for (var i = 0; i < tabs.length; ++i) {
     if (tabs[i].filterFlag == filterFlag) {
