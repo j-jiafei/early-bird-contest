@@ -1,0 +1,30 @@
+extends layout
+
+mixin tabs(tab)
+  - var tabs = ['subscription', 'public-activity']
+  - var names = ['Subscription', 'Public activity']
+  - var hrefs = new Array(tabs.length)
+  - hrefs[0] = '/home'
+  - for (var i = 1; i < tabs.length; ++i) {
+    - hrefs[i] = '/home?tab=' + tabs[i]
+  - }
+  - var activeTabId = 0
+  - for (var i = 0; i < tabs.length; ++i) {
+    - if (tabs[i] == tab)
+      - activeTabId = i
+  - }
+  ul.nav.nav-tabs
+    - for (var i = 0; i < tabs.length; ++i) {
+      - if (i == activeTabId)
+        li.active
+          a(href='#{hrefs[i]}') #{names[i]}
+      - else
+        li
+          a(href='#{hrefs[i]}') #{names[i]}
+    - }
+
+block content
+  div.wrapper
+    div.container
+      mixin tabs(tab)
+      block tab-content

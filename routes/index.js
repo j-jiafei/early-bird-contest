@@ -8,11 +8,7 @@ var raceData = require('../models/race');
 exports.index = function(req, res){
   var currentUser = userHelper.getCurrentUser(req);
   if (currentUser.email) {
-    // Display home page for logged user
-    res.render('home', {
-      title: 'Early Bird Contest'
-      , email: currentUser.email
-    });
+    res.redirect('/home');
   }
   else {
     // Display market index page for new user
@@ -20,5 +16,21 @@ exports.index = function(req, res){
       title: 'Early Bird Contest'
       , email: currentUser.email
     });
+  }
+};
+
+// GET '/home'
+exports.home = function (req, res) {
+  var currentUser = userHelper.getCurrentUser(req);
+  var tab = req.query['tab'];
+  if (currentUser) {
+    res.render('home', {
+      title: 'Early Bird Contest'
+      , email: currentUser.email
+      , tab: tab
+    });
+  }
+  else {
+    res.redirect('/login');
   }
 };

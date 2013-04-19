@@ -6,10 +6,8 @@ block content
     div.container
       form.form-signin(action='/signup-submit', method='POST')
         h2.form-signin-heading Please sign up
-        input.input-block-level(type='text', name='user-name'
-          placeholder='User name', required)
-        input.input-block-level(type='text', name='email',
-          placeholder='Email address')
-        input.input-block-level(type='password', name='password',
+        input.input-block-level(type='text', name='email'
+          placeholder='Email address', required)
+        input.input-block-level(type='password', name='password'
           placeholder='Password', required)
         button.btn.btn-large.btn-primary(type='submit') Sign up

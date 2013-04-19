@@ -37,7 +37,7 @@ exports.loginSubmit = function(req, res) {
 };
 
 /*
- * GET signup
+ * GET '/signup'
  */
 exports.signup = function(req, res) {
   var currentUser = userHelper.getCurrentUser(req);
@@ -47,10 +47,8 @@ exports.signup = function(req, res) {
   });
 };
 
-/*
- * POST signup-submit
- */
-exports.signup_submit = function(req, res) {
+// POST '/signup-submit'
+exports.signupSubmit = function(req, res) {
   var email = req.body.email;
   var password = req.body.password;
   userModel.register(email, password, function(err) {
@@ -58,6 +56,7 @@ exports.signup_submit = function(req, res) {
       res.redirect('/signup?err-msg=' + err);
     }
     else {
+      req.session.email = email;
       res.redirect('/');
     }
   });

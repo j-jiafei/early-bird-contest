@@ -40,6 +40,7 @@ app.configure('development', function(){
 });
 
 app.get('/', routes.index);
+app.get('/home', routes.home);
 app.get('/contests', contest.list);
 app.get('/new-contest', contest.new);
 app.get('/about', about.about);
@@ -47,7 +48,7 @@ app.get('/login', user.login);
 app.post('/login-submit', user.loginSubmit);
 app.get('/logout', user.logout);
 app.get('/signup', user.signup);
-app.post('/signup-submit', user.signup_submit);
+app.post('/signup-submit', user.signupSubmit);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
