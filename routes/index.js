@@ -4,24 +4,21 @@
 var userHelper = require('./helpers/user-helper');
 var raceData = require('../models/race');
 
-/// GET '/'
+// GET '/'
 exports.index = function(req, res){
   var currentUser = userHelper.getCurrentUser(req);
-  raceData.list('active', function (err, races) {
-    if (err) {
-      console.log(err);
-      res.render('error', {
-        error: err
-      });
-    }
-    else {
-      res.render('index', {
-        title: 'Early Bird Race'
-        , races: races
-        , raceFilterFlag: 'active'
-        , logged: req.session.logged
-        , email: currentUser.email
-      });
-    }
-  }); // end of racedata.racelist
+  if (currentUser.email) {
+    // Display home page for logged user
+    res.render('home', {
+      title: 'Early Bird Contest'
+      , email: currentUser.email
+    });
+  }
+  else {
+    // Display market index page for new user
+    res.render('index', {
+      title: 'Early Bird Contest'
+      , email: currentUser.email
+    });
+  }
 };

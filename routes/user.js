@@ -1,4 +1,4 @@
-var userdata = require('../models/user');
+var userModel = require('../models/user');
 var constants = require('./constants');
 var userHelper = require('./helpers/user-helper');
 
@@ -22,37 +22,16 @@ exports.logout = function (req, res) {
 /*
  * POST login-submit
  */
-exports.login_submit = function(req, res) {
+exports.loginSubmit = function(req, res) {
   var email = req.body.email;
   var password = req.body.password;
-  userdata.validate(email, password, function(err, err_no, user) {
+  userModel.authenticate(email, password, function(err, user) {
     if (err) {
-      console.log(err);
+      res.redirect('/login?err-msg=' + err);
     }
-    switch (err_no) {
-      case 0:
-        // authentication successfully
-        req.session.email = email;
-        req.session.userId = user._id;
-        if (req.body.remember) {
-          // TODO - I have not sure how to set maxAge in cookieSession.
-          // I guess we need a separate cookie to deal with this case.
-        }
-        res.redirect('/');
-        break;
-      case 1:
-        res.redirect('/login?err_no=1');
-        break;
-      case 2:
-        res.redirect('/login?err_no=2');
-        break;
-      case 3:
-        res.redirect('/login?err_no=3');
-        break;
-      default:
-        console.error('[Error] Undefined behavior');
-        res.redirect('/login?err_no=3');
-        break;
+    else {
+      req.session.email = email;
+      res.redirect('/');
     }
   });
 };
@@ -74,26 +53,12 @@ exports.signup = function(req, res) {
 exports.signup_submit = function(req, res) {
   var email = req.body.email;
   var password = req.body.password;
-  userdata.create(email, password, function(err, err_no) {
+  userModel.register(email, password, function(err) {
     if (err) {
-      res.redirect('/signup?error_no=2');
+      res.redirect('/signup?err-msg=' + err);
     }
     else {
-      switch (err_no) {
-        case 0:
-          res.redirect('/');
-          break;
-        case 1:
-          res.redirect('/login?error_no=1');
-          break;
-        case 2:
-          res.redirect('/signup?error_no=2');
-          break;
-        default:
-          console.error('[Error] Undefined behavior');
-          res.redirect('/signup?error_no=2');
-          break;
-      }
+      res.redirect('/');
     }
   });
 };

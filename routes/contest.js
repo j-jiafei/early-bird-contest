@@ -53,10 +53,19 @@ exports.list = function (req, res) {
 // GET '/new-contest'
 exports.new = function (req, res) {
   var currentUser = userHelper.getCurrentUser(req);
+  if (!currentUser.email) {
+    // login first
+    res.redirect('/login');
+  }
   res.render('new-contest', {
     title: 'Early Bird Contests - Submit a New Contest'
-    , email: currentUser
+    , email: currentUser.email
   });
+};
+
+// POST '/new-contest-submit'
+exports.newSubmit = function (req, res) {
+  var currentUser = userHelper.getCurrentUser(req);
 };
 
 // POST race submitting.

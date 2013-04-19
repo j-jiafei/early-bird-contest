@@ -1,26 +1,28 @@
 extends layout
 
 block content
+  link(rel='stylesheet', href='/stylesheets/new-contest.css')
   div.wrapper
     div.container
-      form.form-horizontal(action='/contest-submit', method='POST')
+      form.form-horizontal(action='/new-contest-submit', method='POST')
         legend New Contest
         div.control-group
           label.control-label(for='title') Title
           div.controls
-            input(type='text', id='title', placeholder='Title')
+            input.input-xlarge(type='text', id='title', placeholder='Title'
+              required)
         div.control-group
-          label.control-label(for='start-date') From
-          dev.controls
-            input(type='date', id='start-date')
+          label.control-label(for='from-date') From
+          div.controls
+            input.input-xlarge(type='date', id='from-date', required)
         div.control-group
-          label.control-label(for='end-date') To
-          dev.controls
-            input(type='date', id='end-date')
+          label.control-label(for='to-date') To
+          div.controls
+            input.input-xlarge(type='date', id='to-date', required)
         div.control-group
           label.control-label Repeat
-          dev.controls
-            select
+          div.controls
+            select.input-xlarge
               option(value='none') None
               option(value='every-day') Every day
               option(value='every-two-days') Every two days
@@ -29,12 +31,13 @@ block content
               option(value='every-two-weeks') Every two weeks
         div.control-group
           label.control-label(for='featured') Featured
-          dev.controls
+          div.controls
             input(type='checkbox', id='featured', value='featured')
         div.control-group
           label.control-label(for='description') Description
           div.controls
-            textarea(rows='5', type='textarea', id='description', placeholder='Description')
+            textarea.input-xlarge(rows='5', type='textarea', id='description'
+              placeholder='Description')
         div.control-group
           div.controls
             button.btn.btn-primary(type='submit') Submit

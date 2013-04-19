@@ -13,12 +13,20 @@ html
           div.nav-collapse.collapse
             a.brand(href='/') Early Bird Contest
             ul.nav
-              li
-                a(href='/') Home
-              li
-                a(href='/contests') Contests
-              li
-                a(href='/about') About
+              - if (email)
+                li
+                  a(href='/explore') Explore
+                li
+                  a(href='/blog') Blog
+                li
+                  a(href='/help') Help
+              - else
+                li
+                  a(href='/explore') Explore
+                li
+                  a(href='/features') Features
+                li
+                  a(href='/blog') Blog
             ul.nav.pull-right
               if email
                 li

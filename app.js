@@ -26,7 +26,6 @@ app.configure(function(){
   app.use(express.favicon());
   app.use(express.logger('dev'));
   app.use(express.cookieParser(cookieSecret));
-//   app.use(express.cookieSession());
   app.use(express.cookieSession());
   app.use(express.bodyParser());
   app.use(express.methodOverride());
@@ -45,7 +44,7 @@ app.get('/contests', contest.list);
 app.get('/new-contest', contest.new);
 app.get('/about', about.about);
 app.get('/login', user.login);
-app.post('/login-submit', user.login_submit);
+app.post('/login-submit', user.loginSubmit);
 app.get('/logout', user.logout);
 app.get('/signup', user.signup);
 app.post('/signup-submit', user.signup_submit);

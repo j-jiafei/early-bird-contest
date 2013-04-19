@@ -1,0 +1,16 @@
+extends layout
+
+mixin tabs(tabs)
+  ul.nav.nav-tabs
+    - each tab in tabs
+      - if (tab.active)
+        li.active
+          a(href='/contests?tab=#{tab.filterFlag}') #{tab.name}
+      - else
+        li
+          a(href='/contests?tab=#{tab.filterFlag}') #{tab.name}
+
+block content
+  div.wrapper
+    div.container
+      mixin tabs(tabs)
