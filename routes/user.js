@@ -1,6 +1,6 @@
 var userModel = require('../models/user');
-var constants = require('./constants');
-var userHelper = require('./helpers/user-helper');
+var constants = require('../helpers/constants');
+var userHelper = require('../helpers/user-helper');
 
 /*
  * GET login

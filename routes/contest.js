@@ -1,9 +1,9 @@
 /// \brief route User related methods.
 /// \author Jeff Jia
 
-var raceModel = require('../models/race');
+var contestData = require('../models/contest');
 var userModel = require('../models/user');
-var userHelper = require('./helpers/user-helper');
+var userHelper = require('../helpers/user-helper');
 
 /// local functions for exports.list
 var createTab = function (name, filterFlag, active) {
@@ -50,7 +50,7 @@ exports.list = function (req, res) {
   });
 };
 
-// GET '/new-contest'
+// GET '/contest/new'
 exports.new = function (req, res) {
   var currentUser = userHelper.getCurrentUser(req);
   if (!currentUser.email) {
@@ -63,9 +63,30 @@ exports.new = function (req, res) {
   });
 };
 
-// POST '/new-contest-submit'
+// POST '/contest/new-submit'
 exports.newSubmit = function (req, res) {
   var currentUser = userHelper.getCurrentUser(req);
+  if (currentUser.email && userHelper.canCreateContest(currentUser.email)) {
+    console.log(req.body);
+    contestData.newContest(req.body['title'], {
+      'from-date': req.body['from-date']
+      , 'to-date': req.body['to-date']
+      , repeat: req.body['repeat']
+      , featured: req.body['featured']
+      , description: req.body['description']
+    }, function (err, contest) {
+      if (err) {
+        console.log(err);
+        res.redirect('/contest/new?err=' + err.message);
+        return;
+      }
+      res.redirect('/management');
+    });
+  }
+  else {
+    // the user cannot create a contest
+    res.redirect('/login');
+  }
 };
 
 // POST race submitting.

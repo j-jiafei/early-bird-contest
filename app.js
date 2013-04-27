@@ -6,7 +6,7 @@
 /// FIXME: The value of COOKIE_SECRET should not be set in the source code.
 var cookieSecret = 'zaq12wsxcde34rfvbgt5';
 
-var routeConstants = require('./routes/constants');
+var routeConstants = require('./helpers/constants');
 
 var express = require('express')
   , db = require('./models/db')
@@ -41,8 +41,15 @@ app.configure('development', function(){
 
 app.get('/', routes.index);
 app.get('/home', routes.home);
+app.get('/public-activity', routes.publicActivity);
+app.get('/management', routes.management);
+app.get('/explore', routes.explore);
+app.get('/features', routes.features);
+app.get('/blog', routes.blog);
+app.get('/help', routes.help);
 app.get('/contests', contest.list);
-app.get('/new-contest', contest.new);
+app.get('/contest/new', contest.new);
+app.post('/contest/new-submit', contest.newSubmit);
 app.get('/about', about.about);
 app.get('/login', user.login);
 app.post('/login-submit', user.loginSubmit);

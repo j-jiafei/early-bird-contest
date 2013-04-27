@@ -18,3 +18,9 @@ exports.getCurrentUser = function (req) {
     };
   }
 };
+
+/// check whether the user has the authority to create a new contest.
+exports.canCreateContest = function (email) {
+  // return true for debugging.
+  return true;
+};

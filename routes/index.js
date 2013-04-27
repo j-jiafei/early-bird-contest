@@ -1,8 +1,8 @@
 /// route '/'
 /// \author Jeff Jia
 
-var userHelper = require('./helpers/user-helper');
-var raceData = require('../models/race');
+var userHelper = require('../helpers/user-helper');
+var contestData = require('../models/contest');
 
 // GET '/'
 exports.index = function(req, res){
@@ -33,4 +33,61 @@ exports.home = function (req, res) {
   else {
     res.redirect('/login');
   }
+};
+
+// GET '/public-activity'
+exports.publicActivity = function (req, res) {
+  var currentUser = userHelper.getCurrentUser(req);
+  res.render('public-activity', {
+    title: 'Public Activity'
+    , email: currentUser.email
+  });
+};
+
+// GET '/management'
+exports.management = function (req, res) {
+  var currentUser = userHelper.getCurrentUser(req);
+  contestData.findAll(function (err, contests) {
+    res.render('management', {
+      title: 'Management'
+      , email: currentUser.email
+      , contests: contests
+    });
+  });
+};
+
+// GET '/explore'
+exports.explore = function (req, res) {
+  var currentUser = userHelper.getCurrentUser(req);
+  res.render('explore', {
+    title: 'Explore'
+    , email: currentUser.email
+  });
+};
+
+// GET '/features'
+exports.features = function (req, res) {
+  var currentUser = userHelper.getCurrentUser(req);
+  res.render('features', {
+    title: 'Features'
+    , email: currentUser.email
+  });
+};
+
+// GET '/blog'
+exports.blog = function (req, res) {
+  var currentUser = userHelper.getCurrentUser(req);
+  res.render('blog', {
+    title: 'Blog'
+    , email: currentUser.email
+  });
+};
+
+// GET '/help'
+exports.help = function (req, res) {
+  var currentUser = userHelper.getCurrentUser(req);
+  res.render('help', {
+    title: 'Help'
+    , email: currentUser.email
+  });
 };

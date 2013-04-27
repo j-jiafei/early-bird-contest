@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 var md5 = require('./password');
-var errorMessage = require('../routes/error-message');
+var errorMessage = require('../helpers/error-message');
 
 var userSchema = new mongoose.Schema({
   email: String

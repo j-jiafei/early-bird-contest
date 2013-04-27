@@ -1,7 +1,7 @@
 /// route '/about'
 /// \author Jeff Jia
 
-var userHelper = require('./helpers/user-helper');
+var userHelper = require('../helpers/user-helper');
 
 /// GET '/about'
 exports.about = function (req, res) {

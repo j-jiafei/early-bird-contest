@@ -29,9 +29,17 @@ html
                   a(href='/blog') Blog
             ul.nav.pull-right
               if email
-                li
-                  a(href='/')
+                li.dropdown
+                  a.dropdown-toggle(data-toggle='dropdown', href='#')
                     | #{email}
+                    b.caret
+                  ul.dropdown-menu
+                    li
+                      a(href='#') Setting
+                    li
+                      a(href='#') Dropdown 2
+                    li
+                      a(href='#') Dropdown 3
                 li
                   a(href='/logout') Logout
               else

@@ -8,6 +8,8 @@ exports.nonExistentEmailError = 'Email does not exist';
 
 exports.raceAlreadySubscribedError = 'The race has been subscribed';
 
-exports.raceTitleAlreadyExistsError = 'Race title already exists';
+exports.contestTitleAlreadyExistsError = 'Contest title already exists';
 
 exports.nonExistentRaceTitleError = 'Race title does not exist';
+
+exports.contestTitleInvalidError = 'Contest title is invalid';

@@ -1,0 +1,29 @@
+extends layout
+
+block content
+  div.wrapper
+    div.container
+      a.btn.btn-primary.pull-right(href='/contest/new') New Contest
+      ul.nav.nav-tabs
+        li
+          a(href='/') Subscription
+        li
+          a(href='/public-activity') Public Activity
+        li.active
+          a(href='/management') Management
+      - for (var id in contests) {
+        ul.contest
+          li
+            | Title: #{contests[id].title}
+          li
+            | From: #{contests[id]['from-date']}
+          li
+            | To: #{contests[id]['to-date']}
+          li
+            | Featured: #{contests[id].featured}
+          li
+            | Repeat: #{contests[id].repeat}
+          li
+            | Description: #{contests[id].description}
+          hr
+      - }

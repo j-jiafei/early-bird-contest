@@ -1,7 +1,7 @@
 /// test for userModel
 /// \author Jeff Jia
 
-var errorMessage = require('../../routes/error-message');
+var errorMessage = require('../../helpers/error-message');
 var testConstant = require('../test-constant');
 var userModel = require('../../models/user');
 
