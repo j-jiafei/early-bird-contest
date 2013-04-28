@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  div.wrapper
+    div.container
+      ul
+        li.title= contest.title
+        li.description= contest.description
+        a.btn(href='/management') Back

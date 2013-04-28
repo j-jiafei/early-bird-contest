@@ -133,4 +133,43 @@ describe('contestData', function () {
     });
   });
 
+  describe('.removeByTitle', function (done) {
+    it('Remove the contest with valid title', function (done) {
+      contestData.removeByTitle('contest1', function (err) {
+        if (err) {
+          done(err);
+          return;
+        }
+        contestData.findAll(function (err, contests) {
+          if (err) {
+            done(err);
+            return;
+          }
+          assert.equal(contests.length, 1);
+          assert.equal(contests[0].title, 'contest3');
+          done();
+        });
+      });
+    });
+
+    it('Return normally contest when title is not present', function (done) {
+      contestData.removeByTitle('contest2', function (err) {
+        if (err) {
+          done(err);
+          return;
+        }
+        contestData.findAll(function (err, contests) {
+          if (err) {
+            done(err);
+            return;
+          }
+          assert.equal(contests.length, 2);
+          assert.equal(contests[0].title, 'contest1');
+          assert.equal(contests[1].title, 'contest3');
+          done();
+        });
+      });
+    });
+  });
+
 });

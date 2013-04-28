@@ -111,69 +111,51 @@ exports.submit = function(req, res) {
   });
 };
 
-// GET race viewing.
+// GET '/contest/view?title=***'
 exports.view = function(req, res) {
-  var _id = req.query['_id'];
+  var title = req.query['title'];
   var currentUser = userHelper.getCurrentUser(req);
-  console.log(_id);
-  raceModel.find({
-    _id: _id
-  }, function (err, races) {
-    if (err || races.length < 1) {
-      res.render('error', {
-        title: 'Internal Error',
-        error: err
-      });
+  contestData.findByTitle(title, function (err, contest) {
+    if (err) {
+      res.redirect('/explore?err=' + err);
+      return;
     }
-    else {
-      res.render('raceview', {
-        title: 'Early Bird Race'
-        , race: races[0]
-        , email: currentUser.email
-      });
-    }
+    res.render('contest-view', {
+      title: contest.title
+      , email: currentUser.email
+      , contest: contest
+    });
+    return;
   });
 };
 
-// GET race editing.
+// GET '/contest/edit?title=***'
 exports.edit = function(req, res) {
-  var _id = req.query['_id'];
   var currentUser = userHelper.getCurrentUser(req);
-  console.log(_id);
-  raceModel.find({
-    _id: _id
-  }, function (err, races) {
-    if (err || races.length < 1) {
-      res.render('error', {
-        title: 'Internal Error',
-        error: err
-      });
+  var title = req.query['title'];
+  contestData.findByTitle(title, function (err, contest) {
+    if (err) {
+      res.redirect('/management?err=' + err);
+      return;
     }
-    else {
-      res.render('raceedit', {
-        title: 'Early Bird Race - Edit a Race'
-        , race: races[0]
-        , email: currentUser.email
-      });
-    }
-  }); // end of raceModel.find
+    res.render('contest-edit', {
+      title: 'Edit - ' + title
+      , email: currentUser.email
+      , contest: contest
+    });
+  });
 };
 
-// GET race deleting.
+// GET '/contest/delete?title=***'
 exports.delete = function (req, res) {
-  var _id = req.query['_id'];
-  raceModel.remove({
-    _id: _id
-  }, function (err) {
+  var currentUser = userHelper.getCurrentUser(req);
+  var title = req.query['title'];
+  contestData.removeByTitle(title, function (err) {
     if (err) {
-      res.render('error', {
-        title: 'Internal Error',
-        error: err
-      });
+      res.redirect('/management?err=' + err);
+      return;
     }
-    else {
-      res.redirect('/');
-    }
+    res.redirect('/management');
   });
 };
 

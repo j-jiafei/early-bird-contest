@@ -59,9 +59,12 @@ exports.management = function (req, res) {
 // GET '/explore'
 exports.explore = function (req, res) {
   var currentUser = userHelper.getCurrentUser(req);
-  res.render('explore', {
-    title: 'Explore'
-    , email: currentUser.email
+  contestData.findAll(function (err, contests) {
+    res.render('explore', {
+      title: 'Explore'
+      , email: currentUser.email
+      , contests: contests
+    });
   });
 };
 

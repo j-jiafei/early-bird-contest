@@ -1,0 +1,48 @@
+extends layout
+
+block content
+  link(rel='stylesheet', href='/stylesheets/new-contest.css')
+  div.wrapper
+    div.container
+      form.form-horizontal(action='/contest/new-submit', method='POST')
+        legend Edit a Contest
+        div.control-group
+          label.control-label(for='title') Title
+          div.controls
+            input.input-xlarge(type='text', id='title', name='title'
+              placeholder='Title', value='#{contest.title}', required)
+        div.control-group
+          label.control-label(for='from-date') From
+          div.controls
+            input.input-xlarge(type='date', id='from-date', name='from-date'
+              value='#{contest[\'from-date\']}', required)
+        div.control-group
+          label.control-label(for='to-date') To
+          div.controls
+            input.input-xlarge(type='date', id='to-date', name='to-date'
+              value='#{contest[\'to-date\']}', required)
+        div.control-group
+          label.control-label Repeat
+          div.controls
+            select.input-xlarge(name='repeat')
+              option(value='none') None
+              option(value='every-day') Every day
+              option(value='every-two-days') Every two days
+              option(value='every-three-days') Every three days
+              option(value='every-week') Every week
+              option(value='every-two-weeks') Every two weeks
+        div.control-group
+          label.control-label(for='featured') Featured
+          div.controls
+            input(type='checkbox', id='featured', name='featured'
+              value='true')
+        div.control-group
+          label.control-label(for='description') Description
+          div.controls
+            textarea.input-xlarge(rows='5', type='textarea', id='description'
+              value='#{contest.description}', name='description'
+              placeholder='Description')
+        div.control-group
+          div.controls
+            button.btn.btn-primary(type='submit') Submit
+            a.btn(href='#') Cancel

@@ -36,6 +36,12 @@ exports.findAll = function (callback) {
   });
 };
 
+exports.removeByTitle = function (title, callback) {
+  Contest.remove({ title: title }, function (err) {
+    callback(err);
+  });
+};
+
 exports.newContest = function (title, info, callback) {
   if (!contestHelper.isContestTitleValid(title)) {
     callback(new Error(errorMessage.contestTitleInvalidError));

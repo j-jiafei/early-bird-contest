@@ -25,5 +25,8 @@ block content
             | Repeat: #{contests[id].repeat}
           li
             | Description: #{contests[id].description}
+          a.btn(href='/contest/view?title=#{contests[id].title}') View
+          a.btn(href='/contest/edit?title=#{contests[id].title}') Edit
+          a.btn(href='/contest/delete?title=#{contests[id].title') Delete
           hr
       - }

@@ -10,3 +10,10 @@ block content
               a(href='#') Explore
             li
               a(href='#') Other
+    - for (var id in contests) {
+      ul.contest
+        li.title
+          | Title #{contests[id].title}
+        li.description
+          | Description #{contests[id].description}
+    - }
