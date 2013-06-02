@@ -16,6 +16,19 @@ var express = require('express')
   , about = require('./routes/about')
   , http = require('http')
   , path = require('path');
+  , passport = require('passport')
+  , LocalStrategy = require('passport-local').Strategy
+
+// Passport session setup.
+passport.serializeUser(function(user, done) {
+  done(null, user.email);
+});
+
+passport.deserialize(function (email, done) {
+  findByEmail(email, function (err, user) {
+    done(err, user);
+  });
+});
 
 var app = express();
 
@@ -29,10 +42,11 @@ app.configure(function(){
   app.use(express.cookieSession());
   app.use(express.bodyParser());
   app.use(express.methodOverride());
+  app.use(passport.initialize());
+  app.use(passport.session());
   app.use(app.router);
   app.use(require('stylus').middleware(__dirname + '/public'));
   app.use(express.static(path.join(__dirname, 'public')));
-  // change secret later, and secret should not be in the source code
 });
 
 app.configure('development', function(){

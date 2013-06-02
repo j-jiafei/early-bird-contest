@@ -11,6 +11,8 @@
     "stylus": "*",
     "mongoose": "*",
     "connect": "*",
-    "async": "*"
+    "async": "*",
+    "passport": "*",
+    "passport-local": "*"
   }
 }
